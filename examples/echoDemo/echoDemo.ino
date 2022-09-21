@@ -92,7 +92,7 @@ void loop()
       // We need to convert the line to bytes, no more than 20 at this time
       uint8_t sendbuffer[20];
       s.getBytes(sendbuffer, 20);
-      char sendbuffersize = min(20, s.length());
+      char sendbuffersize = min(20U, s.length());
 
       Serial.print(F("\n* Sending -> \"")); Serial.print((char *)sendbuffer); Serial.println("\"");
 

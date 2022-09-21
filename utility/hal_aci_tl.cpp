@@ -359,7 +359,7 @@ hal_aci_data_t * hal_aci_tl_poll_get(void)
   uint8_t byte_cnt;
   uint8_t byte_sent_cnt;
   uint8_t max_bytes;
-  hal_aci_data_t data_to_send;
+  hal_aci_data_t data_to_send = {0};
 
   //SPI.begin();  
     
