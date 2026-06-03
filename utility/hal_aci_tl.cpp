@@ -332,9 +332,10 @@ void hal_aci_tl_init()
 #endif
     
   delay(30); //Wait for the nRF8001 to get hold of its lines - the lines float for a few ms after the reset
-  if (HAL_IO_RADIO_IRQ != 0xFF)
+  if (HAL_IO_RADIO_IRQ != 0xFF) {
     SPI.usingInterrupt(HAL_IO_RADIO_IRQ); // add checking for spi conflicts
     attachInterrupt(HAL_IO_RADIO_IRQ, m_rdy_line_handle, LOW); 
+  }
   // We use the LOW level of the RDYN line as the atmega328 can wakeup from sleep only on LOW
 }
 
@@ -374,7 +375,7 @@ hal_aci_data_t * hal_aci_tl_poll_get(void)
   uint8_t max_bytes;
   hal_aci_data_t data_to_send;
 
-
+  memset(&data_to_send, 0, sizeof(data_to_send));
   //SPI.begin();  
   SPI.beginTransaction(SPISettings(2000000, LSBFIRST, SPI_MODE0));  // gain control of SPI bus
   HAL_IO_SET_STATE(HAL_IO_RADIO_REQN, 0);

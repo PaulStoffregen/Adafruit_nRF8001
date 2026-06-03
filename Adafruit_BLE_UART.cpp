@@ -210,7 +210,7 @@ size_t Adafruit_BLE_UART::print(const __FlashStringHelper *ifsh)
 {
   // Copy bytes from flash string into RAM, then send them a buffer at a time.
   char buffer[PRINT_BUFFER_SIZE] = {0};
-  const char PROGMEM *p = (const char PROGMEM *)ifsh;
+  const char /*PROGMEM*/ *p = (const char /*PROGMEM*/ *)ifsh;
   size_t written = 0;
   int i = 0;
   unsigned char c = pgm_read_byte(p++);
@@ -234,7 +234,7 @@ size_t Adafruit_BLE_UART::print(const __FlashStringHelper *ifsh)
   return written;
 }
 
-size_t Adafruit_BLE_UART::write(uint8_t * buffer, uint8_t len)
+size_t Adafruit_BLE_UART::write(uint8_t * buffer, size_t len)
 {
   uint8_t bytesThisPass, sent = 0;
 
@@ -478,6 +478,9 @@ bool Adafruit_BLE_UART::begin(uint16_t advTimeout, uint16_t advInterval)
   adv_interval = advInterval; /* ToDo: Check range! */
 
   /* Setup the service data from nRFGo Studio (services.h) */
+#ifdef SERVICES_PIPE_TYPE_MAPPING_CONTENT
+  aci_state.aci_setup_info.services_pipe_type_mapping = &services_pipe_type_mapping[0];
+#else
   if (NULL != services_pipe_type_mapping)
   {
     aci_state.aci_setup_info.services_pipe_type_mapping = &services_pipe_type_mapping[0];
@@ -486,6 +489,7 @@ bool Adafruit_BLE_UART::begin(uint16_t advTimeout, uint16_t advInterval)
   {
     aci_state.aci_setup_info.services_pipe_type_mapping = NULL;
   }
+#endif
   aci_state.aci_setup_info.number_of_pipes    = NUMBER_OF_PIPES;
   aci_state.aci_setup_info.setup_msgs         = (hal_aci_data_t*)setup_msgs;
   aci_state.aci_setup_info.num_setup_msgs     = NB_SETUP_MESSAGES;

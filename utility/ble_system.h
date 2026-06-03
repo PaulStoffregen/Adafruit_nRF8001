@@ -1,5 +1,5 @@
 #ifndef BLE_SYSTEM_H_
-#define BLE_SYSTEM_H
+#define BLE_SYSTEM_H_
 
 /*
 #define HAL_IO_RADIO_CSN       SS
